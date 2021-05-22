@@ -1,14 +1,9 @@
+let canvas = document.querySelector("#canvas");
+let context = canvas.getContext("2d");
+let video = document.querySelector("#video");
 
-console.log("hi guys");
-
-Webcam.set({
-	width:1920,
-	height:1080,
-	image_format:"jpeg",
-	jpeg_quality: 90
-})
-Webcam.attach("#camera");
-
-function take_snapshot(){
-
+if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+	navigator.mediaDevices.getUserMedia({video: true}).then(stream => {
+		video.srcObject = stream;
+	});
 }
