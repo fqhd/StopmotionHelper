@@ -1,27 +1,28 @@
-let canvas = document.querySelector("#canvas");
-let context = canvas.getContext("2d");
 let video = document.querySelector("#video");
+let button = document.querySelector("#snapButton");
+let canvas = document.querySelector("#canvas");
+let image = document.querySelector("#image");
 
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
-	navigator.mediaDevices.getUserMedia({video: true}).then(stream => {
-		video.srcObject = stream;
-	});
-}
+let constraints = {
+	audio: false,
+	video: true
+};
 
-document.getElementById("snap").addEventListener("click", () => {
-	context.drawImage(video, 0, 0, 640, 480);
-	downloadImage(canvas.toDataURL());
-})
+navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
+	let videoTracks = stream.getVideoTracks();
+	console.log("Got video tracks: " + videoTracks[0].label);
+	window.stream = stream;
+	video.srcObject = stream;
+}).catch(function(error){
+	// Display an error message
+	console.log("Something went wrong in the video");
+});
 
-async function downloadImage(imageSrc) {
-	const image = await fetch(imageSrc)
-	const imageBlog = await image.blob()
-	const imageURL = URL.createObjectURL(imageBlog)
-
-	const link = document.createElement('a')
-	link.href = imageURL
-	link.download = 'image file name here'
-	document.body.appendChild(link)
-	link.click()
-	document.body.removeChild(link)
-}
+button.addEventListener("click", function(){
+	canvas.width = 640;
+	canvas.height = 480;
+	let ctx = canvas.getContext("2d");
+	ctx.drawImage(video, 0, 0, 640, 480);
+	let dataURI = canvas.toDataURL("image/jpeg");
+	image.style.setProperty('--datauri', dataURI);
+});

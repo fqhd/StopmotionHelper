@@ -7,11 +7,16 @@
 </head>
 
 <body>
-	<video id="video" width=640 height=480 autoplay></video>
-	<button id="snap">Take Picture</button>
-	<canvas id="canvas" width="640" height="480"></canvas>
+	<div id="display">
+		<video id="video" autoplay></video>
+	</div>
+	<button id="snapButton">Snap</button>
+	<canvas id="canvas"></canvas>
+	<div id="image"></div>
 </body>
 
-<script type="text/javascript" src="src/main.js"></script>
+<link rel="stylesheet" href="css/style.css">
+
+<script src="src/main.js"></script>
 
 </html>
