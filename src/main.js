@@ -1,7 +1,6 @@
 let video = document.querySelector("#video");
 let button = document.querySelector("#snapButton");
-let canvas = document.querySelector("#canvas");
-let image = document.querySelector("#image");
+let display = document.querySelector("#display");
 
 let constraints = {
 	audio: false,
@@ -19,10 +18,11 @@ navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
 });
 
 button.addEventListener("click", function(){
+	let canvas = document.createElement("canvas");
 	canvas.width = 640;
 	canvas.height = 480;
 	let ctx = canvas.getContext("2d");
 	ctx.drawImage(video, 0, 0, 640, 480);
 	let dataURI = canvas.toDataURL("image/jpeg");
-	image.style.setProperty('--datauri', dataURI);
+	display.style.setProperty('--datauri', `url(${dataURI})`);
 });
